@@ -15,6 +15,7 @@
 import copy
 import logging
 from dataclasses import dataclass
+import re
 
 import numpy as np
 from vllm import LLM, SamplingParams
@@ -23,8 +24,11 @@ logger = logging.getLogger()
 
 
 def build_conv(
-    prompt: str, response: str | None, system_prompt: str
+    prompt: str, response: str | None, system_prompt: str, model_name:str
 ) -> list[dict[str, str]]:
+    if "deepseek" in model_name.lower():
+        prompt = system_prompt +"\n\n" + prompt
+        system_prompt = None
     conversation = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": prompt},
@@ -115,6 +119,12 @@ def generate_k_steps(
         llm_outputs = llm.generate(gen_prompts, gen_sampling_params, use_tqdm=False)
         for gen_result, output in zip(current_gen, llm_outputs):
             gen_text = output.outputs[0].text
+            if "</think>" in gen_text:
+                gen_text = gen_text.split("</think>")[1]
+            pattern = r'<step>(.*?)</step>'
+            matches = re.findall(pattern, gen_text, re.DOTALL)
+            if len(matches) > 0:
+                gen_text = matches[0]
             if i == 0:
                 gen_result.first_step_text = gen_text
                 gen_result.first_step_stop_reason = output.outputs[0].stop_reason

@@ -92,8 +92,9 @@ def _beam_search(batch_of_prompts, config: Config, llm: LLM, prm: PRM) -> list[B
                 n=1,
             )
 
+        model_name = llm.llm_engine.get_model_config().model
         convs = [
-            build_conv(b.prompt, b.current_text, config.system_prompt)
+            build_conv(b.prompt, b.current_text, config.system_prompt, model_name=model_name)
             for b in active_beams
         ]
         continue_final_message = i > 0

@@ -36,7 +36,7 @@ def _dvts(batch_of_prompts: list[str], config: Config, llm: LLM, prm: PRM):
         max_tokens=2048,
         top_p=config.top_p,
         stop=[
-            "\n\n"
+            "</step>"
         ],  # we consider that a step in the problem is indicated by a double newline
         include_stop_str_in_output=True,
         n=1,
@@ -75,9 +75,9 @@ def _dvts(batch_of_prompts: list[str], config: Config, llm: LLM, prm: PRM):
                 top_p=config.top_p,
                 n=1,
             )
-
+        model_name = llm.llm_engine.get_model_config().model
         convs = [
-            build_conv(b.prompt, b.current_text, config.system_prompt)
+            build_conv(b.prompt, b.current_text, config.system_prompt, model_name=model_name)
             for b in gen_beams
         ]
         continue_final_message = i > 0

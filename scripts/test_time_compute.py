@@ -16,14 +16,13 @@
 import logging
 
 import torch
-from vllm import LLM
-
 from sal.config import Config
 from sal.models.reward_models import load_prm
 from sal.search import beam_search, best_of_n, dvts
 from sal.utils.data import get_dataset, save_dataset
 from sal.utils.parser import H4ArgumentParser
 from sal.utils.score import score
+from vllm import LLM
 
 logging.basicConfig(level=logging.INFO)
 
@@ -41,6 +40,7 @@ APPROACHES = {
 def main():
     parser = H4ArgumentParser(Config)
     config = parser.parse()
+    #config = Config()
 
     approach_fn = APPROACHES[config.approach]
 
@@ -51,6 +51,9 @@ def main():
         enable_prefix_caching=True,
         seed=config.seed,
         tensor_parallel_size=num_gpus,
+        # tensor_parallel_size=1,
+        enforce_eager=True,
+        max_model_len=32768,
     )
     prm = load_prm(config)
 
