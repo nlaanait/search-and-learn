@@ -1,0 +1,9 @@
+# refer to src/sal/config.py for more options
+
+model_path: meta-llama/Llama-3.1-8B-Instruct
+approach: dvts
+n: 256
+search_batch_size: 5
+num_samples: 500 # REMOVE THIS LINE TO RUN ON THE WHOLE DATASET
+seed: 0
+# gpu_memory_utilization: 0.5

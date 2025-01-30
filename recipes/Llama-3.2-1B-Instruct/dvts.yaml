@@ -3,5 +3,6 @@
 approach: dvts
 n: 4
 search_batch_size: 25
-num_samples: 10       # REMOVE THIS LINE TO RUN ON THE WHOLE DATASET
+num_samples: 4 # REMOVE THIS LINE TO RUN ON THE WHOLE DATASET
 seed: 0
+gpu_memory_utilization: 0.4

@@ -1,0 +1,13 @@
+# refer to src/sal/config.py for more options
+
+model_path: deepseek-ai/DeepSeek-R1-Distill-Llama-8B
+approach: dvts
+n: 256
+search_batch_size: 5
+num_samples: 150 # REMOVE THIS LINE TO RUN ON THE WHOLE DATASET
+seed: 0
+# gpu_memory_utilization: 0.4
+temperature: 0.6
+system_prompt: "Please reason step by step. Your answer must follow this format exactly: 1. Output each step within <step></step>.\n 2. For each step include: [Concise Description] \n [Brief Explanation].\n 3. Always conclude with 'Therefore, the final answer is: $\\boxed{answer}$.'\n Here is an example: \n <step>\n'1. Calculate \\( r \\) using the formula \\( r = \\sqrt{x^2 + y^2} \\):\n   \\[\n   r = \\sqrt{0^2 + 3^2} = \\sqrt{9} = 3\n   \\]'\n</step>\n<step>\n'2. Determine the angle \\( \\theta \\) using \\( \\theta = \\arctan\\left(\\frac{y}{x}\\right) \\). Since \\( x = 0 \\) and \\( y = 3 \\), the point lies on the positive y-axis, so \\( \\theta = \\frac{\\pi}{2} \\).'\n</step>\n
+'Therefore, the polar coordinates are \\(\\boxed{(3, \\frac{\\pi}{2})}\\).'" 
+# system_prompt: "Please reason step by step. In your <answer><answer/>, summarize your steps using this format:\n\n## Step 1: [Concise description]\n[Brief explanation and calculations]\n\n## Step 2: [Concise description]\n[Brief explanation and calculations]\n\n...\n\n Always conclude with:\n\nTherefore, the final answer is: $\\boxed{answer}$." 
